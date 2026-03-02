@@ -42,3 +42,7 @@
 
 # build folder
 /[Bb]uild/
+
+# cache
+*.idx
+/[Cc]ache/

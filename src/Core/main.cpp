@@ -1,4 +1,4 @@
-#include <glad/glad.h>
+#include "glad/glad.h"
 #include <GLFW/glfw3.h>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -13,7 +13,7 @@ int screen_width = 800, screen_height = 600;
 void framebuffer_size_callback(GLFWwindow* window, int width, int height); 
 void process_input(GLFWwindow *window);
 
-std::vector<Object> objects;
+std::vector<Object*> objects;
 
 int main()
 {
@@ -62,7 +62,7 @@ int main()
     glm::mat4 projection = glm::perspective(glm::radians(90.0f), (float)screen_width / (float)screen_height, 0.01f, 100.0f);
 
     Triangle triangle1(&view, &projection);
-    objects.push_back(triangle1);
+    objects.push_back(&triangle1);
     Shader shader("../shaders/shader.vert", "../shaders/shader.frag");
 
     while(!glfwWindowShouldClose(window))
@@ -80,7 +80,7 @@ int main()
             
             shader.Use();
 
-            triangle1.Draw(shader);
+            objects.at(0)->Draw(shader);
 
             glfwSwapBuffers(window);
             glfwPollEvents();
@@ -117,18 +117,18 @@ void process_input(GLFWwindow *window)
 
     if(glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
     {
-        objects.at(0).Translate(glm::vec3(0.05f, 0.0f, 0.0f));
+        objects.at(0)->Translate(glm::vec3(0.05f, 0.0f, 0.0f));
     }
     if(glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
     {
-        objects.at(0).Translate(glm::vec3(-0.05f, 0.0f, 0.0f));
+        objects.at(0)->Translate(glm::vec3(-0.05f, 0.0f, 0.0f));
     }
     if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
     {
-        objects.at(0).Translate(glm::vec3(0.0f, 0.05f, 0.0f));
+        objects.at(0)->Translate(glm::vec3(0.0f, 0.05f, 0.0f));
     }
     if(glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
     {
-        objects.at(0).Translate(glm::vec3(0.0f, -0.05f, 0.0f));
+        objects.at(0)->Translate(glm::vec3(0.0f, -0.05f, 0.0f));
     }
 }
