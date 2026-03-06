@@ -1,1 +1,2 @@
-cmake --build build
+call cmake --preset=mingw
+call cmake --build build
