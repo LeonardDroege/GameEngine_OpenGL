@@ -22,12 +22,14 @@ class Object
         void Scale(glm::vec3 delta_size);
         void SetSize(glm::vec3 size);
 
-        inline Renderer& GetRenderer() { return this->m_transform.GetRenderer(); }
+        inline Renderer& GetRenderer() { return this->m_renderer; }
         inline Transform& GetTransform() { return this->m_transform; }
 
     protected:
         UUID m_ID;
 
+        glm::mat4 m_model;
+        Renderer m_renderer;
         Transform m_transform;
 
 };
