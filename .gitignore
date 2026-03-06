@@ -1,2 +1,6 @@
 # build folder
 /[Bb]uild/
+
+# Cache
+/[Cc]ache/
+/.cache/
