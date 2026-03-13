@@ -1,17 +1,13 @@
-#include "glad/glad.h"
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "global.hpp"
+#include "window.hpp"
 
 #include "objects/triangle.hpp"
 
-#include <iostream>
-
-int screen_width = 800, screen_height = 600;
-
-void framebuffer_size_callback(GLFWwindow* window, int width, int height); 
-void process_input(GLFWwindow *window);
+void process_input(Window* window);
 
 std::vector<Object*> objects;
 
@@ -28,27 +24,8 @@ int main()
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
-    GLFWwindow* window = glfwCreateWindow(screen_width, screen_height, "OpenGL-Test", NULL, NULL);
-    if (window == NULL)
-    {
-        std::cout << "Failed to create GLFW window" << std::endl;
-        glfwTerminate();
-        return -1;
-    }
-    glfwMakeContextCurrent(window);
-
-    glfwSwapInterval(0);
-
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-    {
-        std::cout << "Failed to initialize GLAD" << std::endl;
-        glfwTerminate();
-        return -1;
-    } 
-
-    glViewport(0, 0, screen_width, screen_height);
-
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    Window win("OpelGL-Test", 800, 600);
+    win.MakeCurrent();
 
     double last_time = glfwGetTime();
     double last_update_time = last_time;
@@ -59,13 +36,13 @@ int main()
     glm::vec3 camera_view_direction(0.0f, 0.0f, -1.0f);
 
     glm::mat4 view = glm::lookAt(camera_position, camera_position + camera_view_direction, glm::vec3(0.0f, 1.0f, 0.0f));
-    glm::mat4 projection = glm::perspective(glm::radians(90.0f), (float)screen_width / (float)screen_height, 0.01f, 100.0f);
+    glm::mat4 projection = glm::perspective(glm::radians(90.0f), 800.0f / 600.0f, 0.01f, 100.0f);
 
     Triangle triangle1(&view, &projection);
     objects.push_back(&triangle1);
     Shader shader("../shaders/shader.vert", "../shaders/shader.frag");
 
-    while(!glfwWindowShouldClose(window))
+    while(!win.ShouldClose())
     {
         double current_time = glfwGetTime();
         delta += current_time - last_time;
@@ -73,7 +50,7 @@ int main()
 
         if(delta >= (1.0 / FPS))
         {
-            process_input(window);
+            process_input(&win);
 
             glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
@@ -82,7 +59,7 @@ int main()
 
             objects.at(0)->Draw(shader);
 
-            glfwSwapBuffers(window);
+            win.SwapBuffers();
             glfwPollEvents();
 
             delta = 0;
@@ -101,33 +78,26 @@ int main()
     return 0;
 }
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+void process_input(Window *window)
 {
-    screen_width = width;
-    screen_height = height;
-    glViewport(0, 0, width, height);
-} 
-
-void process_input(GLFWwindow *window)
-{
-    if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+    if(window->KeyPressed(GLFW_KEY_ESCAPE))
     {
-        glfwSetWindowShouldClose(window, true);
+        window->Close();
     }
 
-    if(glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+    if(window->KeyPressed(GLFW_KEY_D))
     {
         objects.at(0)->Translate(glm::vec3(0.05f, 0.0f, 0.0f));
     }
-    if(glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+    if(window->KeyPressed(GLFW_KEY_A))
     {
         objects.at(0)->Translate(glm::vec3(-0.05f, 0.0f, 0.0f));
     }
-    if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+    if(window->KeyPressed(GLFW_KEY_W))
     {
         objects.at(0)->Translate(glm::vec3(0.0f, 0.05f, 0.0f));
     }
-    if(glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+    if(window->KeyPressed(GLFW_KEY_S))
     {
         objects.at(0)->Translate(glm::vec3(0.0f, -0.05f, 0.0f));
     }
