@@ -17,10 +17,12 @@ class Window
         void GetSize();
 
         inline void Close() { glfwSetWindowShouldClose(this->m_window, true); }
-        inline bool ShouldClose() { return glfwWindowShouldClose(this->m_window); }
         inline void SwapBuffers() { glfwSwapBuffers(this->m_window); }
-        inline bool KeyPressed(int key) { return glfwGetKey(this->m_window, key) == GLFW_PRESS; }
         inline void MakeCurrent() { glfwMakeContextCurrent(this->m_window); }
+        
+        inline bool ShouldClose() { return glfwWindowShouldClose(this->m_window); }
+        inline bool KeyDown(int key) { return glfwGetKey(this->m_window, key) == GLFW_PRESS; }
+        inline bool KeyUp(int key) { return glfwGetKey(this->m_window, key) == GLFW_RELEASE; }
 
     private:
         void initialize();

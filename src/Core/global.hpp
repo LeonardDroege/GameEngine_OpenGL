@@ -12,6 +12,8 @@ static constexpr glm::vec3 DIRECTION_LEFT(-1.0f, 0.0f, 0.0f);
 static constexpr glm::vec3 DIRECTION_DOWN(0.0f, -1.0f, 0.0f);
 static constexpr glm::vec3 DIRECTION_RIGHT(1.0f, 0.0f, 0.0f);
 
+static double DeltaTime = 0.0;
+
 struct Color
 {
     unsigned char a;

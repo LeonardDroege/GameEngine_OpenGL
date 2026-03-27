@@ -80,24 +80,24 @@ int main()
 
 void process_input(Window *window)
 {
-    if(window->KeyPressed(GLFW_KEY_ESCAPE))
+    if(window->KeyDown(GLFW_KEY_ESCAPE))
     {
         window->Close();
     }
 
-    if(window->KeyPressed(GLFW_KEY_D))
+    if(window->KeyDown(GLFW_KEY_D))
     {
         objects.at(0)->Translate(glm::vec3(0.05f, 0.0f, 0.0f));
     }
-    if(window->KeyPressed(GLFW_KEY_A))
+    if(window->KeyDown(GLFW_KEY_A))
     {
         objects.at(0)->Translate(glm::vec3(-0.05f, 0.0f, 0.0f));
     }
-    if(window->KeyPressed(GLFW_KEY_W))
+    if(window->KeyDown(GLFW_KEY_W))
     {
         objects.at(0)->Translate(glm::vec3(0.0f, 0.05f, 0.0f));
     }
-    if(window->KeyPressed(GLFW_KEY_S))
+    if(window->KeyDown(GLFW_KEY_S))
     {
         objects.at(0)->Translate(glm::vec3(0.0f, -0.05f, 0.0f));
     }
